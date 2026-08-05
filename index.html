@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuki Store - Dashboard v1.0</title>
+    <meta property="og:title" content="Yuki Store - Dashboard v1.0">
+    <meta property="og:description" content="Solusi digital terbaik untuk kebutuhan panel Pterodactyl, sewa bot WhatsApp, dan script premium terupdate.">
+    <meta property="og:url" content="https://yukii-store.vercel.app">
+    <meta property="og:image" content="https://yuki-regal.vercel.app/Yuki1782410723295.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <link rel="icon" href="https://yuki-regal.vercel.app//Yuki1785746271503.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { inter: ['Inter', 'sans-serif'] } } }
+        }
+        
+        // ============================================================
+        // 🛡️ ANTI-CURI & TOXIC PROTECTION v1.0
+        // KALAU ADA YANG COPAS, KENA TOXIC! 💀
+        // ============================================================
+        
+        (function() {
+            // 1. Cek apakah ini dijalankan di domain yang benar
+            const allowedDomains = ['yukii-store.vercel.app', 'localhost', '127.0.0.1'];
+            const currentDomain = window.location.hostname;
+            const isAllowed = allowedDomains.some(d => currentDomain.includes(d) || currentDomain === d);
+            
+            if (!isAllowed && !window.location.href.includes('file://')) {
+                // TAMPILAN TOXIC UNTUK PENCURI! 🔥
+                document.documentElement.innerHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body {
+                                background: #0a0a0a;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                min-height: 100vh;
+                                font-family: 'Courier New', monospace;
+                                overflow: hidden;
+                            }
+                            .toxic-box {
+                                background: linear-gradient(145deg, #1a0000, #2d0000);
+                                border: 3px solid #ff0000;
+                                border-radius: 20px;
+                                padding: 50px 40px;
+                                max-width: 600px;
+                                text-align: center;
+                                box-shadow: 0 0 80px rgba(255,0,0,0.3), inset 0 0 60px rgba(255,0,0,0.1);
+                                animation: pulse 2s ease-in-out infinite;
+                            }
+                            @keyframes pulse {
+                                0%, 100% { box-shadow: 0 0 80px rgba(255,0,0,0.3), inset 0 0 60px rgba(255,0,0,0.1); }
+                                50% { box-shadow: 0 0 120px rgba(255,0,0,0.5), inset 0 0 80px rgba(255,0,0,0.2); }
+                            }
+                            .toxic-icon {
+                                font-size: 80px;
+                                margin-bottom: 20px;
+                                animation: shake 0.5s ease-in-out infinite;
+                            }
+                            @keyframes shake {
+                                0%, 100% { transform: rotate(-5deg); }
+                                50% { transform: rotate(5deg); }
+                            }
+                            .toxic-title {
+                                color: #ff0000;
+                                font-size: 32px;
+                                font-weight: 900;
+                                text-transform: uppercase;
+                                letter-spacing: 4px;
+                                text-shadow: 0 0 20px rgba(255,0,0,0.5);
+                                margin-bottom: 15px;
+                            }
+                            .toxic-text {
+                                color: #ff4444;
+                                font-size: 16px;
+                                line-height: 1.8;
+                                margin-bottom: 20px;
+                            }
+                            .toxic-text span {
+                                color: #ff0000;
+                                font-weight: 900;
+                                font-size: 20px;
+                            }
+                            .toxic-divider {
+                                width: 80%;
+                                height: 2px;
+                                background: linear-gradient(90deg, transparent, #ff0000, transparent);
+                                margin: 20px auto;
+                            }
+                            .toxic-footer {
+                                color: #ff6666;
+                                font-size: 12px;
+                                opacity: 0.6;
+                            }
+                            .glitch {
+                                animation: glitch 0.3s infinite;
+                            }
+                            @keyframes glitch {
+                                0% { text-shadow: 2px 0 red, -2px 0 blue; }
+                                25% { text-shadow: -2px 0 red, 2px 0 blue; }
+                                50% { text-shadow: 2px 2px red, -2px -2px blue; }
+                                75% { text-shadow: -2px 2px red, 2px -2px blue; }
+                                100% { text-shadow: 2px 0 red, -2px 0 blue; }
+                            }
+                            .skull {
+                                font-size: 40px;
+                                margin: 10px 0;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="toxic-box">
+                            <div class="toxic-icon">💀</div>
+                            <div class="toxic-title glitch">⚠️ AKSES DITOLAK ⚠️</div>
+                            <div class="toxic-divider"></div>
+                            <div class="toxic-text">
+                                <span>☠️ KAMU PENCURI? ☠️</span><br><br>
+                                Jangan coba-coba mencuri source code ini!<br>
+                                Ini adalah <span>YUKI STORE</span> milik Regal.<br><br>
+                                🖕 <span>COPAS = TOXIC!</span> 🖕<br><br>
+                                Lebih baik belajar bikin sendiri,<br>
+                                daripada malu jadi pencuri! 🤡
+                            </div>
+                            <div class="skull">☠️</div>
+                            <div class="toxic-divider"></div>
+                            <div class="toxic-footer">
+                                © 2026 YUKI STORE • Powered by Regal<br>
+                                <span style="color: #ff0000;">#AntiCopas #ToxicProtection</span>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                return;
+            }
+            
+            // 2. Cek apakah ada yang coba inspect element / buka dev tools
+            const originalConsole = console.log;
+            console.log = function() {
+                // Jika ada yang coba console.log, kasih pesan toxic
+                if (arguments.length > 0 && typeof arguments[0] === 'string') {
+                    const msg = arguments[0];
+                    if (msg.includes('source') || msg.includes('code') || msg.includes('html')) {
+                        alert('🖕 JANGAN COBA-COBA CURINYA YA! 🖕\nSource code ini milik YUKI STORE!');
+                    }
+                }
+                originalConsole.apply(console, arguments);
+            };
+            
+            // 3. Cek kanan klik / context menu
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert('☠️ MAU COPAS? GAK BISA! ☠️\n\nIni punya YUKI STORE!');
+                return false;
+            });
+            
+            // 4. Cek tombol Ctrl+U (View Source), Ctrl+Shift+I (Inspect), F12
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+U, Ctrl+Shift+I, F12
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.key === 'u') || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'i') ||
+                    (e.ctrlKey && e.shiftKey && e.key === 'j')) {
+                    e.preventDefault();
+                    alert('💀 MAU LIAT SOURCE? GAK BISA! 💀\n\nUdah di-encrypt sama YUKI STORE!');
+                    return false;
+                }
+            });
+            
+            // 5. Toxic message di console (buat yang nekad buka console)
+            console.log('%c☠️ YUKI STORE - ANTI COPAS ACTIVE ☠️', 'color: red; font-size: 24px; font-weight: bold;');
+            console.log('%c🖕 JANGAN COBA-COBA CURINYA! 🖕', 'color: orange; font-size: 18px;');
+            console.log('%cSource code ini dilindungi oleh YUKI STORE!', 'color: yellow; font-size: 14px;');
+            console.log('%c© 2026 Regal • All rights reserved', 'color: gray; font-size: 12px;');
+            
+            // 6. Toxic message buat yang coba inspect
+            const originalOpen = window.open;
+            window.open = function() {
+                alert('☠️ MAU BUKA INSPECT? GAK BISA! ☠️');
+                return null;
+            };
+            
+            // 7. Cek apakah ada yang coba save page (Ctrl+S)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    alert('💀 GAK BISA DISIMPAN! 💀\n\nIni source code YUKI STORE!');
+                    return false;
+                }
+            });
+            
+            // 8. Cek apakah ada yang coba drag-and-drop file
+            document.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+            document.addEventListener('drop', function(e) {
+                e.preventDefault();
+                alert('🚫 GAK BISA DRAG-DROP! 🚫');
+            });
+            
+            console.log('✅ YUKI STORE - Anti Copas Active! 🛡️');
+        })();
+    </script>
+</head>
+<body>
+    <!-- TEMPAT SEMUA HALAMAN DI-RENDER -->
+    <div id="app-root"></div>
+    
+    <!-- ===== LOAD SEMUA SCRIPT ===== -->
+    
+    <!-- 1. Core Loader -->
+    <script src="script/loader.js"></script>
+    
+    <!-- 2. Semua Halaman (HTML dalam bentuk string) -->
+    <script src="script/index.js"></script>
+    <script src="script/pterodactyl.js"></script>
+    <script src="script/sewa-bot.js"></script>
+    <script src="script/script-yuki.js"></script>
+    <script src="script/spotify.js"></script>
+    <script src="script/music-player.js"></script>
+    <script src="script/pinterest.js"></script>
+    
+    <!-- 3. Main Functions -->
+    <script src="script.js"></script>
+    
+    <!-- ===== RENDER PAGE ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const page = params.get('page') || 'index';
+            YUKI.renderPage(page);
+        });
+    </script>
+</body>
+</html>
