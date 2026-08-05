@@ -265,7 +265,6 @@ const PINTEREST_HTML = `<!DOCTYPE html>
             </div>
         </div>
     </div>
-    <script src="script.js"><\/script>
 </body>
 </html>`;
 
