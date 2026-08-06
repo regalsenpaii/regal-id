@@ -2102,14 +2102,9 @@ function initPageSpecific() {
 
 // INIT PERTAMA KALI
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
     initIcons();
-    initSidebar();
-    initInvoiceForm();
     initKeyboard();
     initLoader();
-    initYukiBrandAnimation();
-    initPageSpecific();
 });
 
 // RE-INIT SAAT NAVIGASI SPA (pindah halaman tanpa reload)
