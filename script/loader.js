@@ -19,6 +19,7 @@ function registerPage(name, htmlContent) {
 }
 
 function updateActiveNav(pageName) {
+    // Update sidebar nav items
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
         const href = item.getAttribute('href');
@@ -43,25 +44,32 @@ function renderPage(name, containerId = 'app-root') {
 
     container.innerHTML = html;
 
+    // Update page title
     if (PAGE_TITLES[name]) {
         document.title = PAGE_TITLES[name];
     }
 
+    // Update active nav state
     updateActiveNav(name);
 
+    // Re-init Lucide icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
 
+    // Dispatch event for script.js to handle page-specific inits
     document.dispatchEvent(new CustomEvent('page-loaded', { detail: { page: name } }));
 
+    // Update URL without reloading (SPA behavior)
     if (history.pushState) {
         const newUrl = window.location.pathname + '?page=' + name;
         history.pushState({ page: name }, '', newUrl);
     }
 
+    // Scroll to top
     window.scrollTo(0, 0);
 
+    // Close mobile sidebar if open
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('mobile-overlay');
     const menuToggle = document.getElementById('menu-toggle');
@@ -119,7 +127,11 @@ window.addEventListener('popstate', function(e) {
     }
 });
 
-// NOTE: Auto-render is now handled by inline script in index.html after window.load
+// Auto render on first load
+document.addEventListener('DOMContentLoaded', function() {
+    const page = detectPage();
+    renderPage(page);
+});
 
 window.YUKI = {
     pages: YUKI_PAGES,
