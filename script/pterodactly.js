@@ -1,38 +1,4 @@
-const PTERODACTYL_HTML = `<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuki Store - Panel Pterodactyl</title>
-    <meta property="og:title" content="Yuki Store - Panel Pterodactyl">
-    <meta property="og:description" content="Solusi digital terbaik untuk kebutuhan panel Pterodactyl, sewa bot WhatsApp, dan script premium terupdate.">
-    <meta property="og:url" content="https://yukii-store.vercel.app">
-    <meta property="og:image" content="https://yuki-regal.vercel.app/Yuki1782410723295.jpg">
-    <meta property="og:type" content="website">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <link rel="icon" href="https://yuki-regal.vercel.app//Yuki1785746271503.jpg" type="image/jpeg">
-    <script src="https://cdn.tailwindcss.com"><\/script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"><\/script>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        (function() {
-            const theme = localStorage.getItem('yuki_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-        })();
-    <\/script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { fontFamily: { inter: ['Inter', 'sans-serif'] } } }
-        }
-    <\/script>
-</head>
-<body class="font-inter">
-
-    <aside id="sidebar" class="overflow-x-hidden overflow-y-hidden max-w-full">
+const PTERODACTYL_HTML = `<aside id="sidebar" class="overflow-x-hidden overflow-y-hidden max-w-full">
         <!-- SIDEBAR BRAND (YUKI STORE) -->
         <div class="sidebar-brand">
             <div id="sidebar-brand-click" class="flex items-center gap-3 cursor-pointer select-none group relative p-1.5 rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)]" title="Klik untuk efek ombak!">
@@ -243,9 +209,7 @@ const PTERODACTYL_HTML = `<!DOCTYPE html>
                 <p id="toast-message" class="text-xs text-[var(--text-muted)]">Operasi berhasil</p>
             </div>
         </div>
-    </div>
-</body>
-</html>`;
+    </div>`;
 
 if (typeof YUKI !== 'undefined' && YUKI.registerPage) {
     YUKI.registerPage('pterodactyl', PTERODACTYL_HTML);

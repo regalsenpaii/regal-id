@@ -1,38 +1,4 @@
-const INDEX_HTML = `<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuki Store - Dashboard v1.0</title>
-    <meta property="og:title" content="Yuki Store - Dashboard v1.0">
-    <meta property="og:description" content="Solusi digital terbaik untuk kebutuhan panel Pterodactyl, sewa bot WhatsApp, dan script premium terupdate.">
-    <meta property="og:url" content="https://yukii-store.vercel.app">
-    <meta property="og:image" content="https://yuki-regal.vercel.app/Yuki1782410723295.jpg">
-    <meta property="og:type" content="website">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <link rel="icon" href="https://yuki-regal.vercel.app//Yuki1785746271503.jpg" type="image/jpeg">
-    <script src="https://cdn.tailwindcss.com"><\/script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"><\/script>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        (function() {
-            const theme = localStorage.getItem('yuki_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-        })();
-    <\/script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { fontFamily: { inter: ['Inter', 'sans-serif'] } } }
-        }
-    <\/script>
-</head>
-<body class="font-inter">
-
-    <!-- PROJECT SEKAI STYLE LOADING SCREEN -->
+const INDEX_HTML = `<!-- PROJECT SEKAI STYLE LOADING SCREEN -->
     <div id="proseka-loader" class="fixed inset-0 bg-[#f4f7f6] z-[9999] flex flex-col justify-between items-center py-12 overflow-hidden transition-opacity duration-500">
         <div class="proseka-bg-pattern"></div>
         <div class="flex-1 flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
@@ -355,9 +321,7 @@ const INDEX_HTML = `<!DOCTYPE html>
                 <p id="toast-message" class="text-xs text-[var(--text-muted)]">Operasi berhasil</p>
             </div>
         </div>
-    </div>
-</body>
-</html>`;
+    </div>`;
 
 if (typeof YUKI !== 'undefined' && YUKI.registerPage) {
     YUKI.registerPage('index', INDEX_HTML);

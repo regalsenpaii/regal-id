@@ -4,6 +4,16 @@
 
 const YUKI_PAGES = {};
 
+const PAGE_TITLES = {
+    'index': 'Yuki Store - Dashboard v1.0',
+    'pterodactyl': 'Yuki Store - Panel Pterodactyl',
+    'sewa-bot': 'Yuki Store - Sewa Bot & Premium',
+    'script-yuki': 'Yuki Store - Script Yuki AI',
+    'spotify': 'Yuki Store - Spotify Finder',
+    'music-player': 'Yuki Store - Music Player',
+    'pinterest': 'Yuki Store - Pinterest Search'
+};
+
 function registerPage(name, htmlContent) {
     YUKI_PAGES[name] = htmlContent;
 }
