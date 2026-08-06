@@ -2066,133 +2066,57 @@ function initKeyboard() {
     });
 }
 
-
-// --- 16. LOADER - FIXED ---
-let loaderInterval = null;
-let loaderComplete = false;
-
+// --- 16. LOADER ---
 function initLoader() {
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
-    
-    // Jika loader tidak ada, skip
-    if (!loader) {
-        console.warn('[Loader] Element #proseka-loader tidak ditemukan');
+
+    if (!loader || !progressBar || !percentageText) {
+        console.log('[Loader] Elements not found');
         return;
     }
-    
-    // Reset state
-    loaderComplete = false;
-    loader.classList.remove("opacity-0");
-    loader.style.display = 'flex';
-    loader.style.pointerEvents = "auto";
-    
-    if (progressBar) progressBar.style.width = '0%';
-    if (percentageText) percentageText.innerText = '0%';
 
-    // Hapus interval lama jika ada
-    if (loaderInterval) {
-        clearInterval(loaderInterval);
-        loaderInterval = null;
+    // Stop any existing animation on this loader
+    if (loader.dataset.loaderAnim === 'running') {
+        console.log('[Loader] Already running');
+        return;
     }
+
+    console.log('[Loader] Starting animation');
+    loader.dataset.loaderAnim = 'running';
+
+    // Reset visual state
+    loader.style.opacity = '1';
+    loader.style.pointerEvents = 'auto';
+    loader.style.display = 'flex';
+    loader.classList.remove('opacity-0');
+    progressBar.style.width = '0%';
+    percentageText.textContent = '0%';
 
     let progress = 0;
-    
-    loaderInterval = setInterval(() => {
-        // Tambah progress
-        progress += Math.floor(Math.random() * 8) + 5; // 5-13% per tick
-        
-        // Cap di 100%
+    const step = () => {
+        progress += Math.floor(Math.random() * 12) + 8;
+        if (progress > 100) progress = 100;
+
+        progressBar.style.width = progress + '%';
+        percentageText.textContent = progress + '%';
+
         if (progress >= 100) {
-            progress = 100;
-            clearInterval(loaderInterval);
-            loaderInterval = null;
-            
-            // Update progress ke 100%
-            if (progressBar) progressBar.style.width = '100%';
-            if (percentageText) percentageText.innerText = '100%';
-            
-            // Hide loader setelah 300ms
             setTimeout(() => {
-                if (loader) {
-                    loader.classList.add("opacity-0");
-                    loader.style.pointerEvents = "none";
-                    setTimeout(() => {
-                        if (loader && loader.parentNode) {
-                            loader.style.display = 'none';
-                        }
-                        loaderComplete = true;
-                        console.log('[Loader] Selesai ✅');
-                    }, 500);
-                }
-            }, 300);
-            
-            return;
+                loader.classList.add('opacity-0');
+                loader.style.pointerEvents = 'none';
+                loader.dataset.loaderAnim = 'done';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 400);
+        } else {
+            setTimeout(step, 70);
         }
-        
-        // Update progress
-        if (progressBar) progressBar.style.width = `${progress}%`;
-        if (percentageText) percentageText.innerText = `${progress}%`;
-        
-    }, 100);
-}
+    };
 
-// Fungsi untuk force complete loader
-function completeLoader() {
-    if (loaderComplete) return;
-    
-    const loader = document.getElementById("proseka-loader");
-    const progressBar = document.getElementById("loader-progress-bar");
-    const percentageText = document.getElementById("loader-percentage");
-    
-    if (loaderInterval) {
-        clearInterval(loaderInterval);
-        loaderInterval = null;
-    }
-    
-    if (progressBar) progressBar.style.width = '100%';
-    if (percentageText) percentageText.innerText = '100%';
-    
-    if (loader) {
-        loader.classList.add("opacity-0");
-        loader.style.pointerEvents = "none";
-        setTimeout(() => {
-            if (loader && loader.parentNode) {
-                loader.style.display = 'none';
-            }
-            loaderComplete = true;
-            console.log('[Loader] Force complete ✅');
-        }, 500);
-    }
-}
-
-// Fungsi untuk force complete loader (dipanggil saat navigasi)
-function completeLoader() {
-    if (loaderComplete) return;
-    
-    const loader = document.getElementById("proseka-loader");
-    const progressBar = document.getElementById("loader-progress-bar");
-    const percentageText = document.getElementById("loader-percentage");
-    
-    if (loaderInterval) {
-        clearInterval(loaderInterval);
-        loaderInterval = null;
-    }
-    
-    if (progressBar) progressBar.style.width = '100%';
-    if (percentageText) percentageText.innerText = '100%';
-    
-    if (loader) {
-        loader.classList.add("opacity-0");
-        loader.style.pointerEvents = "none";
-        setTimeout(() => {
-            if (loader && loader.parentNode) {
-                loader.style.display = 'none';
-            }
-            loaderComplete = true;
-        }, 500);
-    }
+    step();
 }
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
@@ -2213,12 +2137,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoader();
 });
 
-// RE-INIT SAAT NAVIGASI SPA
+// RE-INIT SAAT NAVIGASI SPA (pindah halaman tanpa reload)
 document.addEventListener('page-loaded', function(e) {
-    const page = e.detail.page || 'index';
-    
-    // ✅ Selesaikan loader dulu
-    completeLoader();
+    const page = e.detail.page;
     
     // Re-init fungsi yang perlu direset
     initTheme();
