@@ -2066,6 +2066,34 @@ function initKeyboard() {
     });
 }
 
+// ===== PERUBAHAN: Fungsi untuk menyembunyikan loader =====
+function hideLoader() {
+    const loader = document.getElementById("proseka-loader");
+    if (!loader) return;
+    
+    loader.classList.add('opacity-0');
+    loader.style.pointerEvents = 'none';
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 500);
+}
+
+// Fungsi untuk menampilkan loader (opsional untuk transisi)
+function showLoader() {
+    const loader = document.getElementById("proseka-loader");
+    if (!loader) return;
+    
+    loader.style.display = 'flex';
+    loader.classList.remove('opacity-0');
+    loader.style.pointerEvents = 'auto';
+    
+    // Reset progress
+    const progressBar = document.getElementById("loader-progress-bar");
+    const percentageText = document.getElementById("loader-percentage");
+    if (progressBar) progressBar.style.width = '0%';
+    if (percentageText) percentageText.textContent = '0%';
+}
+
 // --- 16. LOADER (One-time only, stays in index.html root) ---
 let loaderFinished = false;
 
@@ -2095,38 +2123,47 @@ function initLoader() {
     }
 
     function finishLoader() {
-        loader.classList.add('opacity-0');
-        loader.style.pointerEvents = 'none';
         loaderFinished = true;
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 500);
+        hideLoader(); // Gunakan fungsi hideLoader
     }
 
     tick();
 }
+
+// Ekspos ke global
+window.hideLoader = hideLoader;
+window.showLoader = showLoader;
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
 function initPageSpecific() {
     const params = new URLSearchParams(window.location.search);
     const page = params.get('page') || 'index';
     
+    // Sembunyikan loader setelah halaman siap
+    hideLoader();
+    
     if (page === 'pterodactyl') renderPanelProducts();
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
-    if (page === 'music-player') initMusicPlayer(); // ⚠️ TAMBAHKAN!
+    if (page === 'music-player') initMusicPlayer();
 }
 
 // INIT PERTAMA KALI
 document.addEventListener('DOMContentLoaded', () => {
     initIcons();
     initKeyboard();
-    initLoader();
+    initLoader(); // Loader akan jalan
+    
+    // Setelah semua siap, sembunyikan loader (fallback)
+    setTimeout(hideLoader, 3000);
 });
 
 // RE-INIT SAAT NAVIGASI SPA (pindah halaman tanpa reload)
 document.addEventListener('page-loaded', function(e) {
     const page = e.detail.page;
+    
+    // Tampilkan loader sebentar untuk transisi
+    showLoader();
     
     // Re-init fungsi yang perlu direset
     initTheme();
@@ -2140,8 +2177,13 @@ document.addEventListener('page-loaded', function(e) {
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
     if (page === 'music-player') initMusicPlayer();
+    
+    // Sembunyikan loader setelah selesai
+    setTimeout(hideLoader, 500);
 });
 
+// Juga sembunyikan saat load selesai
 window.addEventListener('load', () => {
     initIcons();
+    hideLoader(); // Pastikan loader hilang
 });

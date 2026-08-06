@@ -1189,3 +1189,15 @@ html:not(.dark):not([data-theme="dark"]) .theme-toggle-btn svg.moon-icon {
 .btn-copy-sm svg {
     stroke: currentColor;
 }
+
+#proseka-loader {
+    transition: opacity 0.5s ease;
+}
+
+#proseka-loader.opacity-0 {
+    opacity: 0;
+}
+
+#proseka-loader.hidden {
+    display: none !important;
+}
