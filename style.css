@@ -1201,3 +1201,247 @@ html:not(.dark):not([data-theme="dark"]) .theme-toggle-btn svg.moon-icon {
 #proseka-loader.hidden {
     display: none !important;
 }
+
+/* =========================================================================
+   MUSIC PLAYER v3 - iTunes Search & Visualizer Styles
+   (Dipindah dari music-player.html inline <style> ke style.css)
+   ========================================================================= */
+
+/* ===== COMPACT MUSIC PLAYER (BOTTOM FIXED) ===== */
+#music-player {
+    position: fixed;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(24px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.3);
+    z-index: 45;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    color: white;
+}
+#music-player.show {
+    transform: translateY(0);
+}
+@media (max-width: 1023px) {
+    #music-player { left: 0; }
+}
+
+.mp-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+@media (max-width: 640px) {
+    .mp-inner { padding: 10px 14px; gap: 10px; flex-wrap: wrap; }
+}
+
+.mp-cover {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+}
+.mp-cover.kick-beat {
+    animation: coverPulse 0.18s ease-out;
+}
+@keyframes coverPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.mp-info-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.mp-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mp-artist {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-viz-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+    height: 32px;
+    flex: 1;
+    min-width: 80px;
+    max-width: 280px;
+}
+.mp-viz-bar {
+    flex: 1;
+    border-radius: 99px;
+    min-height: 2px;
+    background: rgba(255,255,255,0.85);
+    transition: height 0.05s ease-out;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
+}
+.mp-viz-bar.kick {
+    background: linear-gradient(to top, #fff, #a5f3fc) !important;
+    box-shadow: 0 0 8px rgba(165,243,252,0.6), 0 0 16px rgba(165,243,252,0.3);
+}
+
+.mp-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.mp-btn-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.mp-btn-icon:hover {
+    color: rgba(255,255,255,0.9);
+    transform: scale(1.1);
+}
+.mp-btn-icon:active {
+    transform: scale(0.92);
+}
+.mp-btn-icon.active {
+    color: #a5f3fc;
+}
+.mp-btn-play {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    color: #0f172a;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(255,255,255,0.15);
+    transition: all 0.2s ease;
+}
+.mp-btn-play:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.25);
+}
+.mp-btn-play:active {
+    transform: scale(0.95);
+}
+
+.mp-btn-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 4px;
+}
+.mp-btn-close:hover {
+    background: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    transform: scale(1.1);
+}
+.mp-btn-close:active {
+    transform: scale(0.9);
+}
+
+.mp-progress-wrap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    cursor: pointer;
+}
+.mp-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #22d3ee, #a5f3fc);
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(34,211,238,0.4);
+}
+.mp-progress-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.mp-progress-wrap:hover .mp-progress-thumb {
+    opacity: 1;
+}
+
+/* ===== MUSIC CARD (iTunes Results) ===== */
+.music-card-active {
+    border-color: rgba(236,72,153,0.5) !important;
+    box-shadow: 0 0 20px rgba(236,72,153,0.15), var(--shadow-card-hover) !important;
+}
+.music-card .play-overlay-btn {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.music-card:hover .play-overlay-btn {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.genre-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(236, 72, 153, 0.1);
+    color: #db2777;
+    border: 1px solid rgba(236, 72, 153, 0.15);
+}
+[data-theme="dark"] .genre-badge {
+    background: rgba(236, 72, 153, 0.15);
+    color: #f472b6;
+}
+
+/* ===== PADDING BOTTOM untuk Music Player ===== */
+/* Supaya konten tidak ketutupan fixed player */
+#main-content {
+    padding-bottom: 120px;
+}
+@media (max-width: 640px) {
+    #main-content { padding-bottom: 100px; }
+}
