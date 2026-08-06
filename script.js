@@ -2068,55 +2068,69 @@ function initKeyboard() {
 
 // --- 16. LOADER ---
 function initLoader() {
+    // Wait for next frame to ensure DOM is ready
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            runLoaderAnimation();
+        });
+    });
+}
+
+function runLoaderAnimation() {
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
 
     if (!loader || !progressBar || !percentageText) {
-        console.log('[Loader] Elements not found');
+        console.log('[Loader] Elements not found, skipping');
         return;
     }
 
-    // Stop any existing animation on this loader
-    if (loader.dataset.loaderAnim === 'running') {
-        console.log('[Loader] Already running');
+    // If already done on this element, don't re-run
+    if (loader.dataset.done === 'true') {
+        // Just make sure it's hidden
+        loader.style.display = 'none';
         return;
     }
 
-    console.log('[Loader] Starting animation');
-    loader.dataset.loaderAnim = 'running';
-
-    // Reset visual state
+    // Reset state
+    loader.style.display = 'flex';
     loader.style.opacity = '1';
     loader.style.pointerEvents = 'auto';
-    loader.style.display = 'flex';
     loader.classList.remove('opacity-0');
+    loader.dataset.done = 'false';
+
     progressBar.style.width = '0%';
+    progressBar.style.transition = 'width 0.1s linear';
     percentageText.textContent = '0%';
 
     let progress = 0;
-    const step = () => {
-        progress += Math.floor(Math.random() * 12) + 8;
+
+    function tick() {
+        progress += Math.floor(Math.random() * 15) + 10;
         if (progress > 100) progress = 100;
 
         progressBar.style.width = progress + '%';
         percentageText.textContent = progress + '%';
 
         if (progress >= 100) {
-            setTimeout(() => {
-                loader.classList.add('opacity-0');
-                loader.style.pointerEvents = 'none';
-                loader.dataset.loaderAnim = 'done';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 500);
-            }, 400);
+            setTimeout(finishLoader, 300);
         } else {
-            setTimeout(step, 70);
+            setTimeout(tick, 60);
         }
-    };
+    }
 
-    step();
+    function finishLoader() {
+        loader.classList.add('opacity-0');
+        loader.style.pointerEvents = 'none';
+        loader.dataset.done = 'true';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 500);
+    }
+
+    // Start animation
+    setTimeout(tick, 50);
 }
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
