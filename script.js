@@ -2066,129 +2066,89 @@ function initKeyboard() {
     });
 }
 
-// ===== LOADER FUNCTIONS (REVISI) =====
-function hideLoader() {
+// --- 16. LOADER ---
+function initLoader() {
     const loader = document.getElementById("proseka-loader");
-    if (!loader) return;
-    
-    // Tambahkan class opacity-0
-    loader.classList.add('opacity-0');
-    loader.style.pointerEvents = 'none';
-    
-    // Setelah transisi selesai, sembunyikan sepenuhnya
-    setTimeout(() => {
-        loader.style.display = 'none';
-        loader.classList.add('hidden');
-    }, 600);
-}
+    const progressBar = document.getElementById("loader-progress-bar");
+    const percentageText = document.getElementById("loader-percentage");
 
-function showLoader() {
-    const loader = document.getElementById("proseka-loader");
-    if (!loader) return;
-    
-    // Reset loader ke tampilan awal
+    if (!loader || !progressBar || !percentageText) {
+        console.log('[Loader] Elements not found');
+        return;
+    }
+
+    // Stop any existing animation on this loader
+    if (loader.dataset.loaderAnim === 'running') {
+        console.log('[Loader] Already running');
+        return;
+    }
+
+    console.log('[Loader] Starting animation');
+    loader.dataset.loaderAnim = 'running';
+
+    // Reset visual state
+    loader.style.opacity = '1';
+    loader.style.pointerEvents = 'auto';
     loader.style.display = 'flex';
     loader.classList.remove('opacity-0');
-    loader.classList.remove('hidden');
-    loader.style.pointerEvents = 'auto';
-    loader.style.opacity = '1';
-    loader.style.visibility = 'visible';
-    
-    // Reset progress
-    const progressBar = document.getElementById("loader-progress-bar");
-    const percentageText = document.getElementById("loader-percentage");
-    if (progressBar) progressBar.style.width = '0%';
-    if (percentageText) percentageText.textContent = '0%';
-    
-    // Reset status loader
-    loaderFinished = false;
-    
-    // Jalankan loader lagi
-    initLoader();
-}
-
-// --- 16. LOADER ---
-let loaderFinished = false;
-
-function initLoader() {
-    // Jika loader sudah selesai, jangan jalankan lagi
-    if (loaderFinished) return;
-
-    const loader = document.getElementById("proseka-loader");
-    const progressBar = document.getElementById("loader-progress-bar");
-    const percentageText = document.getElementById("loader-percentage");
-
-    if (!loader || !progressBar || !percentageText) return;
-
-    // Reset progress
     progressBar.style.width = '0%';
     percentageText.textContent = '0%';
 
     let progress = 0;
-    let isFinished = false;
-
-    function tick() {
-        if (isFinished) return;
-        
-        progress += Math.floor(Math.random() * 15) + 10;
+    const step = () => {
+        progress += Math.floor(Math.random() * 12) + 8;
         if (progress > 100) progress = 100;
 
         progressBar.style.width = progress + '%';
         percentageText.textContent = progress + '%';
 
         if (progress >= 100) {
-            isFinished = true;
-            setTimeout(finishLoader, 300);
+            setTimeout(() => {
+                loader.classList.add('opacity-0');
+                loader.style.pointerEvents = 'none';
+                loader.dataset.loaderAnim = 'done';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 400);
         } else {
-            setTimeout(tick, 60 + Math.random() * 40);
+            setTimeout(step, 70);
         }
-    }
+    };
 
-    function finishLoader() {
-        loaderFinished = true;
-        hideLoader();
-    }
-
-    tick();
+    step();
 }
-
-// Ekspos ke global
-window.hideLoader = hideLoader;
-window.showLoader = showLoader;
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
 function initPageSpecific() {
     const params = new URLSearchParams(window.location.search);
     const page = params.get('page') || 'index';
     
-    // Sembunyikan loader setelah halaman siap
-    hideLoader();
-    
     if (page === 'pterodactyl') renderPanelProducts();
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
-    if (page === 'music-player') initMusicPlayer();
+    if (page === 'music-player') initMusicPlayer(); // ⚠️ TAMBAHKAN!
 }
 
 // INIT PERTAMA KALI
 document.addEventListener('DOMContentLoaded', () => {
     initIcons();
     initKeyboard();
-    initLoader(); // Loader akan jalan
-    
-    // Setelah semua siap, sembunyikan loader (fallback)
-    setTimeout(hideLoader, 3000);
+    initLoader();
 });
 
+// RE-INIT SAAT NAVIGASI SPA (pindah halaman tanpa reload)
 document.addEventListener('page-loaded', function(e) {
     const page = e.detail.page;
     
+    // Re-init fungsi yang perlu direset
     initTheme();
     initIcons();
     initSidebar();
     initInvoiceForm();
     initYukiBrandAnimation();
     
+    // Init sesuai halaman
     if (page === 'pterodactyl') renderPanelProducts();
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
@@ -2197,23 +2157,4 @@ document.addEventListener('page-loaded', function(e) {
 
 window.addEventListener('load', () => {
     initIcons();
-    hideLoader(); 
 });
-
-// ===== FIX: CEGAH LOADER MUNCUL SAAT NAVIGASI =====
-// Override event page-loaded agar tidak menampilkan loader
-const originalPageLoaded = document.addEventListener;
-document.addEventListener = function(event, callback) {
-    if (event === 'page-loaded') {
-        // Bungkus callback agar tidak memanggil showLoader
-        const wrappedCallback = function(e) {
-            // Skip showLoader
-            callback(e);
-        };
-        return originalPageLoaded.call(document, event, wrappedCallback);
-    }
-    return originalPageLoaded.call(document, event, callback);
-};
-
-// Atau cara lebih simple: Hapus semua listener page-loaded
-// dan ganti dengan navigasi manual
