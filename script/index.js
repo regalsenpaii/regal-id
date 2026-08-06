@@ -1,7 +1,4 @@
-const INDEX_HTML = `<!-- PROJECT SEKAI STYLE LOADING SCREEN -->
-    <div id="proseka-loader" class="fixed inset-0 bg-[#f4f7f6] z-[9999] flex flex-col justify-between items-center py-12 overflow-hidden transition-opacity duration-500">
-        <div class="proseka-bg-pattern"></div>
-        <div class="flex-1 flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
+const INDEX_HTML = `<div class="flex-1 flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
             <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 via-cyan-400 to-blue-500 flex items-center justify-center shadow-xl shadow-cyan-200/50 mb-4 tracking-wider animate-bounce-slow">
                 <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
             </div>
