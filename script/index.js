@@ -1,24 +1,4 @@
-const INDEX_HTML = `<div class="flex-1 flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
-            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 via-cyan-400 to-blue-500 flex items-center justify-center shadow-xl shadow-cyan-200/50 mb-4 tracking-wider animate-bounce-slow">
-                <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
-            </div>
-            <h2 class="font-extrabold text-2xl text-slate-700 tracking-widest">YUKI STORE</h2>
-            <div class="h-[3px] w-12 bg-cyan-400 mt-2 rounded-full"></div>
-        </div>
-        <div class="w-full max-w-xs px-6 relative z-10">
-            <div class="flex justify-between items-end mb-2">
-                <div class="text-xs font-bold text-slate-400 tracking-wider flex items-center gap-1">
-                    <span>NOW LOADING</span>
-                    <span class="dot-bounce">.</span><span class="dot-bounce [animation-delay:0.2s]">.</span><span class="dot-bounce [animation-delay:0.4s]">.</span>
-                </div>
-                <div id="loader-percentage" class="text-sm font-black text-pink-500 italic tracking-tighter">0%</div>
-            </div>
-            <div class="w-full h-[6px] bg-slate-200 rounded-full overflow-hidden p-[1px]">
-                <div id="loader-progress-bar" class="w-0 h-full bg-gradient-to-r from-pink-500 to-rose-400 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.6)] transition-all duration-100 ease-out"></div>
-            </div>
-        </div>
-    </div>
-
+const INDEX_HTML = `
     <aside id="sidebar" class="overflow-x-hidden overflow-y-hidden max-w-full">
         <!-- SIDEBAR BRAND (YUKI STORE) -->
         <div class="sidebar-brand">
@@ -318,18 +298,11 @@ const INDEX_HTML = `<div class="flex-1 flex flex-col justify-center items-center
                 <p id="toast-message" class="text-xs text-[var(--text-muted)]">Operasi berhasil</p>
             </div>
         </div>
-    </div>`;
+    </div>
+`;
 
 if (typeof YUKI !== 'undefined' && YUKI.registerPage) {
     YUKI.registerPage('index', INDEX_HTML);
 }
 
 console.log('✅ YUKI STORE - Index page registered');
-
-// ===== PASTIKAN LOADER HILANG SETELAH INDEX DI-LOAD =====
-// Tunggu sebentar lalu sembunyikan loader
-setTimeout(() => {
-    if (typeof hideLoader === 'function') {
-        hideLoader();
-    }
-}, 500);
