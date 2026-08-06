@@ -2067,25 +2067,40 @@ function initKeyboard() {
 }
 
 // --- 16. LOADER ---
+let loaderInterval = null;
+
 function initLoader() {
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
     if (!loader || !progressBar || !percentageText) return;
+
+    // Reset loader state for re-entry
+    loader.classList.remove("opacity-0");
+    loader.style.pointerEvents = "auto";
+    progressBar.style.width = '0%';
+    percentageText.innerText = '0%';
+
+    // Clear any existing interval
+    if (loaderInterval) clearInterval(loaderInterval);
+
     let progress = 0;
-    const loadingInterval = setInterval(() => {
+    loaderInterval = setInterval(() => {
         progress += Math.floor(Math.random() * 11) + 5;
         if (progress >= 100) {
             progress = 100;
-            clearInterval(loadingInterval);
+            clearInterval(loaderInterval);
+            loaderInterval = null;
             setTimeout(() => {
                 loader.classList.add("opacity-0");
                 loader.style.pointerEvents = "none";
-                setTimeout(() => { loader.remove(); }, 500);
+                setTimeout(() => { 
+                    if (loader && loader.parentNode) loader.remove(); 
+                }, 500);
             }, 400);
         }
-        progressBar.style.width = `${progress}%`;
-        percentageText.innerText = `${progress}%`;
+        if (progressBar) progressBar.style.width = `${progress}%`;
+        if (percentageText) percentageText.innerText = `${progress}%`;
     }, 80);
 }
 
