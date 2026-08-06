@@ -325,3 +325,11 @@ if (typeof YUKI !== 'undefined' && YUKI.registerPage) {
 }
 
 console.log('✅ YUKI STORE - Index page registered');
+
+// ===== PASTIKAN LOADER HILANG SETELAH INDEX DI-LOAD =====
+// Tunggu sebentar lalu sembunyikan loader
+setTimeout(() => {
+    if (typeof hideLoader === 'function') {
+        hideLoader();
+    }
+}, 500);
