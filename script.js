@@ -2066,8 +2066,6 @@ function initKeyboard() {
     });
 }
 
-// --- 16. LOADER ---
-let loaderInterval = null;
 
 // --- 16. LOADER - FIXED ---
 let loaderInterval = null;
@@ -2079,7 +2077,10 @@ function initLoader() {
     const percentageText = document.getElementById("loader-percentage");
     
     // Jika loader tidak ada, skip
-    if (!loader) return;
+    if (!loader) {
+        console.warn('[Loader] Element #proseka-loader tidak ditemukan');
+        return;
+    }
     
     // Reset state
     loaderComplete = false;
@@ -2108,11 +2109,11 @@ function initLoader() {
             clearInterval(loaderInterval);
             loaderInterval = null;
             
-            // ✅ UPDATE PROGRESS
+            // Update progress ke 100%
             if (progressBar) progressBar.style.width = '100%';
             if (percentageText) percentageText.innerText = '100%';
             
-            // ✅ HIDE LOADER SETELAH 100%
+            // Hide loader setelah 300ms
             setTimeout(() => {
                 if (loader) {
                     loader.classList.add("opacity-0");
@@ -2122,6 +2123,7 @@ function initLoader() {
                             loader.style.display = 'none';
                         }
                         loaderComplete = true;
+                        console.log('[Loader] Selesai ✅');
                     }, 500);
                 }
             }, 300);
@@ -2133,7 +2135,36 @@ function initLoader() {
         if (progressBar) progressBar.style.width = `${progress}%`;
         if (percentageText) percentageText.innerText = `${progress}%`;
         
-    }, 100); // 100ms per tick, lebih smooth
+    }, 100);
+}
+
+// Fungsi untuk force complete loader
+function completeLoader() {
+    if (loaderComplete) return;
+    
+    const loader = document.getElementById("proseka-loader");
+    const progressBar = document.getElementById("loader-progress-bar");
+    const percentageText = document.getElementById("loader-percentage");
+    
+    if (loaderInterval) {
+        clearInterval(loaderInterval);
+        loaderInterval = null;
+    }
+    
+    if (progressBar) progressBar.style.width = '100%';
+    if (percentageText) percentageText.innerText = '100%';
+    
+    if (loader) {
+        loader.classList.add("opacity-0");
+        loader.style.pointerEvents = "none";
+        setTimeout(() => {
+            if (loader && loader.parentNode) {
+                loader.style.display = 'none';
+            }
+            loaderComplete = true;
+            console.log('[Loader] Force complete ✅');
+        }, 500);
+    }
 }
 
 // Fungsi untuk force complete loader (dipanggil saat navigasi)
