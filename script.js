@@ -2066,43 +2066,17 @@ function initKeyboard() {
     });
 }
 
-// --- 16. LOADER ---
-function initLoader() {
-    // Wait for next frame to ensure DOM is ready
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            runLoaderAnimation();
-        });
-    });
-}
+// --- 16. LOADER (One-time only, stays in index.html root) ---
+let loaderFinished = false;
 
-function runLoaderAnimation() {
+function initLoader() {
+    if (loaderFinished) return;
+
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
 
-    if (!loader || !progressBar || !percentageText) {
-        console.log('[Loader] Elements not found, skipping');
-        return;
-    }
-
-    // If already done on this element, don't re-run
-    if (loader.dataset.done === 'true') {
-        // Just make sure it's hidden
-        loader.style.display = 'none';
-        return;
-    }
-
-    // Reset state
-    loader.style.display = 'flex';
-    loader.style.opacity = '1';
-    loader.style.pointerEvents = 'auto';
-    loader.classList.remove('opacity-0');
-    loader.dataset.done = 'false';
-
-    progressBar.style.width = '0%';
-    progressBar.style.transition = 'width 0.1s linear';
-    percentageText.textContent = '0%';
+    if (!loader || !progressBar || !percentageText) return;
 
     let progress = 0;
 
@@ -2123,14 +2097,13 @@ function runLoaderAnimation() {
     function finishLoader() {
         loader.classList.add('opacity-0');
         loader.style.pointerEvents = 'none';
-        loader.dataset.done = 'true';
+        loaderFinished = true;
         setTimeout(() => {
             loader.style.display = 'none';
         }, 500);
     }
 
-    // Start animation
-    setTimeout(tick, 50);
+    tick();
 }
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
