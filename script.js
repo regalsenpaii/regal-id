@@ -2069,39 +2069,77 @@ function initKeyboard() {
 // --- 16. LOADER ---
 let loaderInterval = null;
 
-function initLoader() {
+// --- 16. LOADER ---
+let loaderInterval = null;
+let isLoadingComplete = false;
+
+function initLoader(forceComplete = false) {
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
-    if (!loader || !progressBar || !percentageText) return;
+    
+    // Jika loader sudah dihapus atau tidak ada, skip
+    if (!loader) return;
+    
+    // Jika forceComplete, langsung selesaikan loader
+    if (forceComplete) {
+        completeLoader();
+        return;
+    }
 
-    // Reset loader state for re-entry
+    // Reset loader state
     loader.classList.remove("opacity-0");
     loader.style.pointerEvents = "auto";
-    progressBar.style.width = '0%';
-    percentageText.innerText = '0%';
+    isLoadingComplete = false;
+    
+    if (progressBar) progressBar.style.width = '0%';
+    if (percentageText) percentageText.innerText = '0%';
 
-    // Clear any existing interval
-    if (loaderInterval) clearInterval(loaderInterval);
+    // Clear existing interval
+    if (loaderInterval) {
+        clearInterval(loaderInterval);
+        loaderInterval = null;
+    }
 
     let progress = 0;
     loaderInterval = setInterval(() => {
         progress += Math.floor(Math.random() * 11) + 5;
         if (progress >= 100) {
             progress = 100;
-            clearInterval(loaderInterval);
-            loaderInterval = null;
-            setTimeout(() => {
-                loader.classList.add("opacity-0");
-                loader.style.pointerEvents = "none";
-                setTimeout(() => { 
-                    if (loader && loader.parentNode) loader.remove(); 
-                }, 500);
-            }, 400);
+            completeLoader();
         }
-        if (progressBar) progressBar.style.width = `${progress}%`;
-        if (percentageText) percentageText.innerText = `${progress}%`;
+        if (progressBar) progressBar.style.width = `${Math.min(progress, 100)}%`;
+        if (percentageText) percentageText.innerText = `${Math.min(progress, 100)}%`;
     }, 80);
+}
+
+function completeLoader() {
+    if (isLoadingComplete) return;
+    isLoadingComplete = true;
+    
+    if (loaderInterval) {
+        clearInterval(loaderInterval);
+        loaderInterval = null;
+    }
+    
+    const loader = document.getElementById("proseka-loader");
+    const progressBar = document.getElementById("loader-progress-bar");
+    const percentageText = document.getElementById("loader-percentage");
+    
+    if (progressBar) progressBar.style.width = '100%';
+    if (percentageText) percentageText.innerText = '100%';
+    
+    if (loader) {
+        setTimeout(() => {
+            loader.classList.add("opacity-0");
+            loader.style.pointerEvents = "none";
+            setTimeout(() => { 
+                if (loader && loader.parentNode) {
+                    loader.style.display = 'none';
+                }
+            }, 500);
+        }, 300);
+    }
 }
 
 // ===== PERUBAHAN 2: INIT untuk SPA =====
@@ -2122,9 +2160,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoader();
 });
 
-// RE-INIT SAAT NAVIGASI SPA (pindah halaman tanpa reload)
+// RE-INIT SAAT NAVIGASI SPA
 document.addEventListener('page-loaded', function(e) {
-    const page = e.detail.page;
+    const page = e.detail.page || 'index';
+    
+    // Reset loader terlebih dahulu - selesaikan loading
+    completeLoader();
     
     // Re-init fungsi yang perlu direset
     initTheme();
@@ -2138,6 +2179,9 @@ document.addEventListener('page-loaded', function(e) {
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
     if (page === 'music-player') initMusicPlayer();
+    
+    // Loader baru hanya jika diperlukan (misal halaman butuh loading data)
+    // JANGAN panggil initLoader() di sini kecuali diperlukan!
 });
 
 window.addEventListener('load', () => {
