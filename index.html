@@ -23,98 +23,14 @@
             theme: { extend: { fontFamily: { inter: ['Inter', 'sans-serif'] } } }
         }
     </script>
-    <style>
-        /* Inline loader styles to ensure they work immediately */
-        #proseka-loader {
-            position: fixed;
-            inset: 0;
-            background: #f4f7f6;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 3rem 1rem;
-            transition: opacity 0.5s ease;
-        }
-        [data-theme="dark"] #proseka-loader {
-            background: #0f172a;
-        }
-        .proseka-bg-pattern {
-            position: absolute;
-            inset: 0;
-            opacity: 0.04;
-            background-color: transparent;
-            background-image:
-                linear-gradient(135deg, #334155 25%, transparent 25%),
-                linear-gradient(225deg, #334155 25%, transparent 25%),
-                linear-gradient(45deg, #334155 25%, transparent 25%),
-                linear-gradient(315deg, #334155 25%, #f4f7f6 25%);
-            background-position: 40px 0, 40px 0, 0 0, 0 0;
-            background-size: 80px 80px;
-            background-repeat: repeat;
-        }
-        [data-theme="dark"] .proseka-bg-pattern {
-            background-image:
-                linear-gradient(135deg, #334155 25%, transparent 25%),
-                linear-gradient(225deg, #334155 25%, transparent 25%),
-                linear-gradient(45deg, #334155 25%, transparent 25%),
-                linear-gradient(315deg, #334155 25%, #0f172a 25%);
-        }
-        @keyframes bounceSlow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow { animation: bounceSlow 3s ease-in-out infinite; }
-        @keyframes dotBounce {
-            0%, 100% { transform: translateY(0); opacity: 0.3; }
-            50% { transform: translateY(-4px); opacity: 1; }
-        }
-        .dot-bounce {
-            display: inline-block;
-            animation: dotBounce 1.4s infinite ease-in-out;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-    </style>
-    <!-- Inline loader script - runs immediately -->
-    <script>
-        (function() {
-            // Theme init before anything else
-            const theme = localStorage.getItem('yuki_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-
-            // Loader animation
-            window._yukiLoader = {
-                running: true,
-                hide: function() {
-                    const loader = document.getElementById('proseka-loader');
-                    if (!loader || !window._yukiLoader.running) return;
-                    window._yukiLoader.running = false;
-                    loader.classList.add('opacity-0');
-                    loader.style.pointerEvents = 'none';
-                    setTimeout(function() {
-                        if (loader && loader.parentNode) {
-                            loader.style.display = 'none';
-                        }
-                    }, 500);
-                }
-            };
-        })();
-    </script>
 </head>
 <body>
-    <!-- LOADING SCREEN (outside app-root so it persists across SPA navigation) -->
-    <div id="proseka-loader">
+
+    <div id="proseka-loader" class="fixed inset-0 bg-[#f4f7f6] z-[9999] flex flex-col justify-between items-center py-12 overflow-hidden transition-opacity duration-500">
         <div class="proseka-bg-pattern"></div>
         <div class="flex-1 flex flex-col justify-center items-center relative z-10 animate-fade-in-up">
             <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 via-cyan-400 to-blue-500 flex items-center justify-center shadow-xl shadow-cyan-200/50 mb-4 tracking-wider animate-bounce-slow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
             </div>
             <h2 class="font-extrabold text-2xl text-slate-700 tracking-widest">YUKI STORE</h2>
             <div class="h-[3px] w-12 bg-cyan-400 mt-2 rounded-full"></div>
@@ -123,7 +39,7 @@
             <div class="flex justify-between items-end mb-2">
                 <div class="text-xs font-bold text-slate-400 tracking-wider flex items-center gap-1">
                     <span>NOW LOADING</span>
-                    <span class="dot-bounce">.</span><span class="dot-bounce" style="animation-delay:0.2s">.</span><span class="dot-bounce" style="animation-delay:0.4s">.</span>
+                    <span class="dot-bounce">.</span><span class="dot-bounce [animation-delay:0.2s]">.</span><span class="dot-bounce [animation-delay:0.4s]">.</span>
                 </div>
                 <div id="loader-percentage" class="text-sm font-black text-pink-500 italic tracking-tighter">0%</div>
             </div>
@@ -133,10 +49,8 @@
         </div>
     </div>
 
-    <!-- SPA ROOT -->
     <div id="app-root"></div>
 
-    <!-- ALL SCRIPTS -->
     <script src="script/loader.js"></script>
     <script src="script/index.js"></script>
     <script src="script/pterodactyl.js"></script>
@@ -146,45 +60,7 @@
     <script src="script/music-player.js"></script>
     <script src="script/pinterest.js"></script>
     <script src="script.js"></script>
-
-    <!-- Loader animation + SPA init -->
-    <script>
-        (function() {
-            const progressBar = document.getElementById('loader-progress-bar');
-            const percentageText = document.getElementById('loader-percentage');
-            let progress = 0;
-
-            function tick() {
-                if (!window._yukiLoader || !window._yukiLoader.running) return;
-                progress += Math.floor(Math.random() * 15) + 10;
-                if (progress > 100) progress = 100;
-                if (progressBar) progressBar.style.width = progress + '%';
-                if (percentageText) percentageText.textContent = progress + '%';
-                if (progress >= 100) {
-                    setTimeout(function() {
-                        window._yukiLoader.hide();
-                    }, 300);
-                } else {
-                    setTimeout(tick, 60);
-                }
-            }
-
-            // Start loader animation immediately
-            tick();
-
-            // Hide loader and init SPA when all resources loaded
-            window.addEventListener('load', function() {
-                // Give a small delay for visual polish
-                setTimeout(function() {
-                    window._yukiLoader.hide();
-                    // Init SPA after loader is hidden
-                    if (typeof YUKI !== 'undefined' && YUKI.detectPage && YUKI.renderPage) {
-                        var page = YUKI.detectPage();
-                        YUKI.renderPage(page);
-                    }
-                }, 200);
-            });
-        })();
-    </script>
+    
+    
 </body>
 </html>
