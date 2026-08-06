@@ -2069,76 +2069,98 @@ function initKeyboard() {
 // --- 16. LOADER ---
 let loaderInterval = null;
 
-// --- 16. LOADER ---
+// --- 16. LOADER - FIXED ---
 let loaderInterval = null;
-let isLoadingComplete = false;
+let loaderComplete = false;
 
-function initLoader(forceComplete = false) {
+function initLoader() {
     const loader = document.getElementById("proseka-loader");
     const progressBar = document.getElementById("loader-progress-bar");
     const percentageText = document.getElementById("loader-percentage");
     
-    // Jika loader sudah dihapus atau tidak ada, skip
+    // Jika loader tidak ada, skip
     if (!loader) return;
     
-    // Jika forceComplete, langsung selesaikan loader
-    if (forceComplete) {
-        completeLoader();
-        return;
-    }
-
-    // Reset loader state
+    // Reset state
+    loaderComplete = false;
     loader.classList.remove("opacity-0");
+    loader.style.display = 'flex';
     loader.style.pointerEvents = "auto";
-    isLoadingComplete = false;
     
     if (progressBar) progressBar.style.width = '0%';
     if (percentageText) percentageText.innerText = '0%';
 
-    // Clear existing interval
+    // Hapus interval lama jika ada
     if (loaderInterval) {
         clearInterval(loaderInterval);
         loaderInterval = null;
     }
 
     let progress = 0;
+    
     loaderInterval = setInterval(() => {
-        progress += Math.floor(Math.random() * 11) + 5;
+        // Tambah progress
+        progress += Math.floor(Math.random() * 8) + 5; // 5-13% per tick
+        
+        // Cap di 100%
         if (progress >= 100) {
             progress = 100;
-            completeLoader();
+            clearInterval(loaderInterval);
+            loaderInterval = null;
+            
+            // ✅ UPDATE PROGRESS
+            if (progressBar) progressBar.style.width = '100%';
+            if (percentageText) percentageText.innerText = '100%';
+            
+            // ✅ HIDE LOADER SETELAH 100%
+            setTimeout(() => {
+                if (loader) {
+                    loader.classList.add("opacity-0");
+                    loader.style.pointerEvents = "none";
+                    setTimeout(() => {
+                        if (loader && loader.parentNode) {
+                            loader.style.display = 'none';
+                        }
+                        loaderComplete = true;
+                    }, 500);
+                }
+            }, 300);
+            
+            return;
         }
-        if (progressBar) progressBar.style.width = `${Math.min(progress, 100)}%`;
-        if (percentageText) percentageText.innerText = `${Math.min(progress, 100)}%`;
-    }, 80);
+        
+        // Update progress
+        if (progressBar) progressBar.style.width = `${progress}%`;
+        if (percentageText) percentageText.innerText = `${progress}%`;
+        
+    }, 100); // 100ms per tick, lebih smooth
 }
 
+// Fungsi untuk force complete loader (dipanggil saat navigasi)
 function completeLoader() {
-    if (isLoadingComplete) return;
-    isLoadingComplete = true;
+    if (loaderComplete) return;
+    
+    const loader = document.getElementById("proseka-loader");
+    const progressBar = document.getElementById("loader-progress-bar");
+    const percentageText = document.getElementById("loader-percentage");
     
     if (loaderInterval) {
         clearInterval(loaderInterval);
         loaderInterval = null;
     }
     
-    const loader = document.getElementById("proseka-loader");
-    const progressBar = document.getElementById("loader-progress-bar");
-    const percentageText = document.getElementById("loader-percentage");
-    
     if (progressBar) progressBar.style.width = '100%';
     if (percentageText) percentageText.innerText = '100%';
     
     if (loader) {
+        loader.classList.add("opacity-0");
+        loader.style.pointerEvents = "none";
         setTimeout(() => {
-            loader.classList.add("opacity-0");
-            loader.style.pointerEvents = "none";
-            setTimeout(() => { 
-                if (loader && loader.parentNode) {
-                    loader.style.display = 'none';
-                }
-            }, 500);
-        }, 300);
+            if (loader && loader.parentNode) {
+                loader.style.display = 'none';
+            }
+            loaderComplete = true;
+        }, 500);
     }
 }
 
@@ -2164,7 +2186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('page-loaded', function(e) {
     const page = e.detail.page || 'index';
     
-    // Reset loader terlebih dahulu - selesaikan loading
+    // ✅ Selesaikan loader dulu
     completeLoader();
     
     // Re-init fungsi yang perlu direset
@@ -2179,9 +2201,6 @@ document.addEventListener('page-loaded', function(e) {
     if (page === 'spotify') initSpotify();
     if (page === 'pinterest') initPinterest();
     if (page === 'music-player') initMusicPlayer();
-    
-    // Loader baru hanya jika diperlukan (misal halaman butuh loading data)
-    // JANGAN panggil initLoader() di sini kecuali diperlukan!
 });
 
 window.addEventListener('load', () => {
